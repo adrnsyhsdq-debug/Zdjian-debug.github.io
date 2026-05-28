@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuralEdge — Insight AI & Teknologi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050810;
+    --surface: #0c1120;
+    --card: #101828;
+    --border: rgba(255,255,255,0.07);
+    --accent: #00e5ff;
+    --accent2: #7b61ff;
+    --accent3: #ff6b6b;
+    --text: #e8eaf0;
+    --muted: #6b7280;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'DM Sans', sans-serif;
+    --display: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE TEXTURE ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ─── HERO GRADIENT ─── */
+  .hero-glow {
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 600px;
+    background: radial-gradient(ellipse at center, rgba(0,229,255,0.08) 0%, rgba(123,97,255,0.05) 40%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 5%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(20px);
+    background: rgba(5,8,16,0.7);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--display);
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.8); }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    font-family: var(--display);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 8px 20px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  .nav-cta:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    padding: 160px 5% 80px;
+    overflow: hidden;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--display);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(0,229,255,0.25);
+    padding: 6px 14px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    max-width: 800px;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.4);
+  }
+
+  .hero-title .highlight {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    margin-top: 24px;
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.7;
+    font-weight: 300;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+
+  .hero-actions {
+    margin-top: 40px;
+    display: flex;
+    gap: 16px;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+
+  .btn-primary {
+    font-family: var(--display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: var(--bg);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  .btn-ghost {
+    font-family: var(--display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+  /* ─── TICKER ─── */
+  .ticker-wrap {
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    background: var(--surface);
+  }
+
+  .ticker {
+    display: flex;
+    gap: 0;
+    animation: ticker 30s linear infinite;
+    width: max-content;
+  }
+
+  .ticker-item {
+    font-family: var(--display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 40px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .ticker-item span { color: var(--accent); }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ─── FEATURED ─── */
+  .section {
+    padding: 80px 5%;
+  }
+
+  .section-label {
+    font-family: var(--display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 80px;
+  }
+
+  /* ─── FEATURED GRID ─── */
+  .featured-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .card {
+    background: var(--card);
+    padding: 36px;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+
+  .card:hover { background: #141e30; }
+
+  .card.hero-card {
+    grid-row: 1 / 3;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 520px;
+  }
+
+  .card-visual {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,229,255,0.05), rgba(123,97,255,0.08));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .card:hover .card-visual { opacity: 1; }
+
+  .card-number {
+    font-family: var(--display);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .card-category {
+    font-family: var(--display);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+
+  .cat-llm { background: rgba(0,229,255,0.1); color: var(--accent); }
+  .cat-vision { background: rgba(123,97,255,0.15); color: var(--accent2); }
+  .cat-robotics { background: rgba(255,107,107,0.15); color: var(--accent3); }
+  .cat-policy { background: rgba(255,193,7,0.1); color: #ffc107; }
+  .cat-research { background: rgba(52,199,89,0.1); color: #34c759; }
+
+  .card-title {
+    font-family: var(--serif);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  .hero-card .card-title { font-size: 2rem; }
+  .card:not(.hero-card) .card-title { font-size: 1.1rem; }
+
+  .card-excerpt {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.65;
+    font-weight: 300;
+    margin-bottom: 20px;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--display);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .card-meta-dot { color: var(--border); }
+
+  .card-arrow {
+    margin-left: auto;
+    font-size: 1rem;
+    color: var(--accent);
+    transition: transform 0.2s;
+  }
+
+  .card:hover .card-arrow { transform: translate(3px, -3px); }
+
+  /* ─── ABSTRACT ART ─── */
+  .card-art {
+    position: absolute;
+    top: 24px; right: 24px;
+    opacity: 0.15;
+    transition: opacity 0.3s;
+  }
+
+  .card:hover .card-art { opacity: 0.3; }
+
+  /* ─── GRID 3 COL ─── */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  /* ─── STATS ─── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 80px;
+  }
+
+  .stat {
+    background: var(--surface);
+    padding: 36px;
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: var(--display);
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, var(--text), var(--muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  /* ─── NEWSLETTER ─── */
+  .newsletter {
+    margin: 0 5%;
+    padding: 64px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .newsletter::before {
+    content: '';
+    position: absolute;
+    right: -100px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(0,229,255,0.06), transparent 70%);
+    pointer-events: none;
+  }
+
+  .newsletter-title {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .newsletter-title em {
+    font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.35);
+  }
+
+  .newsletter-sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .newsletter-input {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 18px;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .newsletter-input:focus { border-color: var(--accent); }
+  .newsletter-input::placeholder { color: var(--muted); }
+
+  .newsletter-btn {
+    font-family: var(--display);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: var(--bg);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .newsletter-btn:hover { opacity: 0.85; }
+
+  .form-note {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    margin-top: 80px;
+    padding: 48px 5% 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+
+  .footer-brand p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+    margin-top: 12px;
+    max-width: 260px;
+  }
+
+  .footer-col h4 {
+    font-family: var(--display);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-col a {
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: var(--text); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--muted);
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .social-links {
+    display: flex;
+    gap: 20px;
+  }
+
+  .social-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-family: var(--display);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .social-links a:hover { color: var(--accent); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── READING TIME BADGE ─── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    font-family: var(--display);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .badge-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  /* ─── GRID ABSTRACT DECORATIONS ─── */
+  .grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  @media (max-width: 768px) {
+    .featured-grid { grid-template-columns: 1fr; }
+    .card.hero-card { grid-row: auto; min-height: 380px; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .newsletter { grid-template-columns: 1fr; padding: 40px 32px; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span class="logo-dot"></span>
+    NeuralEdge
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">Terbaru</a></li>
+    <li><a href="#">Riset</a></li>
+    <li><a href="#">Industri</a></li>
+    <li><a href="#">Etika AI</a></li>
+    <li><a href="#">Tools</a></li>
+  </ul>
+  <button class="nav-cta">Langganan</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="grid-lines"></div>
+  <div class="hero-tag">Publikasi AI Independen</div>
+  <h1 class="hero-title">
+    Masa depan<br>
+    <em>kecerdasan</em><br>
+    <span class="highlight">dimulai di sini.</span>
+  </h1>
+  <p class="hero-sub">
+    Analisis mendalam, riset terbaru, dan perspektif kritis tentang kecerdasan buatan — untuk peneliti, insinyur, dan pemikir yang ingin selalu satu langkah ke depan.
+  </p>
+  <div class="hero-actions">
+    <button class="btn-primary">Baca Sekarang</button>
+    <button class="btn-ghost">Lihat Arsip →</button>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="ticker-item"><span>●</span> GPT-5 Diluncurkan Q3 2025</div>
+    <div class="ticker-item"><span>●</span> Gemini Ultra Melampaui Benchmark Coding</div>
+    <div class="ticker-item"><span>●</span> Model Difusi Teks Generasi Baru</div>
+    <div class="ticker-item"><span>●</span> Regulasi AI Eropa Berlaku Penuh</div>
+    <div class="ticker-item"><span>●</span> Robotika Humanoid di Skala Industri</div>
+    <div class="ticker-item"><span>●</span> Open Source LLM Capai Paritas Komersial</div>
+    <div class="ticker-item"><span>●</span> GPT-5 Diluncurkan Q3 2025</div>
+    <div class="ticker-item"><span>●</span> Gemini Ultra Melampaui Benchmark Coding</div>
+    <div class="ticker-item"><span>●</span> Model Difusi Teks Generasi Baru</div>
+    <div class="ticker-item"><span>●</span> Regulasi AI Eropa Berlaku Penuh</div>
+    <div class="ticker-item"><span>●</span> Robotika Humanoid di Skala Industri</div>
+    <div class="ticker-item"><span>●</span> Open Source LLM Capai Paritas Komersial</div>
+  </div>
+</div>
+
+<!-- FEATURED -->
+<section class="section fade-in">
+  <div class="section-label">Artikel Pilihan</div>
+
+  <div class="featured-grid">
+    <!-- HERO CARD -->
+    <div class="card hero-card">
+      <div class="card-visual"></div>
+      <svg class="card-art" width="180" height="180" viewBox="0 0 180 180" fill="none">
+        <circle cx="90" cy="90" r="80" stroke="white" stroke-width="0.5"/>
+        <circle cx="90" cy="90" r="55" stroke="white" stroke-width="0.5"/>
+        <circle cx="90" cy="90" r="30" stroke="white" stroke-width="0.5"/>
+        <line x1="10" y1="90" x2="170" y2="90" stroke="white" stroke-width="0.5"/>
+        <line x1="90" y1="10" x2="90" y2="170" stroke="white" stroke-width="0.5"/>
+        <line x1="33" y1="33" x2="147" y2="147" stroke="white" stroke-width="0.5"/>
+        <line x1="147" y1="33" x2="33" y2="147" stroke="white" stroke-width="0.5"/>
+        <circle cx="90" cy="10" r="3" fill="white"/>
+        <circle cx="90" cy="170" r="3" fill="white"/>
+        <circle cx="10" cy="90" r="3" fill="white"/>
+        <circle cx="170" cy="90" r="3" fill="white"/>
+      </svg>
+      <div>
+        <span class="card-category cat-llm">Large Language Models</span>
+        <h2 class="card-title">Arsitektur Transformers Baru: Mengapa Attention Mekanisme Berevolusi di 2025</h2>
+        <p class="card-excerpt">Dari Mamba hingga RWKV, paradigma pemrosesan sekuens sedang mengalami revolusi diam-diam. Kami bedah setiap arsitektur dan implikasinya terhadap efisiensi komputasi.</p>
+        <div class="card-meta">
+          <span>Dr. Arya Nugroho</span>
+          <span class="card-meta-dot">·</span>
+          <span>24 Mei 2025</span>
+          <span class="card-meta-dot">·</span>
+          <span>12 menit baca</span>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDE CARDS -->
+    <div class="card">
+      <div class="card-visual"></div>
+      <svg class="card-art" width="80" height="80" viewBox="0 0 80 80" fill="none">
+        <rect x="10" y="10" width="60" height="60" stroke="white" stroke-width="0.5"/>
+        <rect x="25" y="25" width="30" height="30" stroke="white" stroke-width="0.5"/>
+        <circle cx="40" cy="40" r="8" stroke="white" stroke-width="0.5"/>
+        <line x1="10" y1="40" x2="32" y2="40" stroke="white" stroke-width="0.5"/>
+        <line x1="48" y1="40" x2="70" y2="40" stroke="white" stroke-width="0.5"/>
+      </svg>
+      <span class="card-category cat-vision">Computer Vision</span>
+      <h3 class="card-title">Segment Anything 3.0: Deteksi Objek Tanpa Label di Era Baru</h3>
+      <p class="card-excerpt">Meta AI kembali mendefinisikan ulang standar zero-shot segmentation dengan pendekatan yang mengejutkan para peneliti.</p>
+      <div class="card-meta">
+        <span>Sari Wulandari</span>
+        <span class="card-meta-dot">·</span>
+        <span>8 menit baca</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-visual"></div>
+      <svg class="card-art" width="80" height="80" viewBox="0 0 80 80" fill="none">
+        <polygon points="40,5 75,65 5,65" stroke="white" stroke-width="0.5" fill="none"/>
+        <polygon points="40,20 62,58 18,58" stroke="white" stroke-width="0.5" fill="none"/>
+        <circle cx="40" cy="42" r="5" stroke="white" stroke-width="0.5"/>
+      </svg>
+      <span class="card-category cat-robotics">Robotika</span>
+      <h3 class="card-title">Figure 02 dan Optimus: Persaingan Robot Humanoid yang Memanas di Lantai Pabrik</h3>
+      <p class="card-excerpt">Dua platform robotika terdepan diuji dalam kondisi industri nyata selama 6 bulan. Siapa yang unggul?</p>
+      <div class="card-meta">
+        <span>Reza Firmansyah</span>
+        <span class="card-meta-dot">·</span>
+        <span>15 menit baca</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LATEST -->
+<section class="section fade-in">
+  <div class="section-label">Terbaru</div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-visual"></div>
+      <span class="card-number">01</span>
+      <span class="card-category cat-policy">Kebijakan</span>
+      <h3 class="card-title">EU AI Act: Apa yang Harus Diketahui Setiap Developer Indonesia</h3>
+      <p class="card-excerpt">Regulasi paling komprehensif di dunia tentang AI kini berlaku. Panduan praktis bagi tim teknologi yang bermitra dengan pasar Eropa.</p>
+      <div class="card-meta">
+        <span>21 Mei · 9 mnt</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-visual"></div>
+      <span class="card-number">02</span>
+      <span class="card-category cat-research">Riset</span>
+      <h3 class="card-title">Constitutional AI 2.0: Anthropic Rilis Kerangka Alignment Terbaru</h3>
+      <p class="card-excerpt">Pendekatan baru dalam melatih model agar tetap aman dan selaras dengan nilai manusia tanpa mengorbankan performa.</p>
+      <div class="card-meta">
+        <span>19 Mei · 11 mnt</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-visual"></div>
+      <span class="card-number">03</span>
+      <span class="card-category cat-llm">LLM</span>
+      <h3 class="card-title">Benchmark MMLU Tidak Lagi Relevan? Komunitas Peneliti Debatkan Metrik Baru</h3>
+      <p class="card-excerpt">Saat model AI mulai "menghafal" benchmark populer, para peneliti bergerak cepat menciptakan evaluasi yang lebih bermakna.</p>
+      <div class="card-meta">
+        <span>17 Mei · 7 mnt</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-visual"></div>
+      <span class="card-number">04</span>
+      <span class="card-category cat-vision">Vision</span>
+      <h3 class="card-title">Sora vs Kling: Perbandingan Komprehensif Model Video Generatif 2025</h3>
+      <p class="card-excerpt">100 prompt, dua model, satu penilaian jujur. Kami menguji konsistensi temporal, kualitas gerakan, dan pemahaman fisika.</p>
+      <div class="card-meta">
+        <span>15 Mei · 14 mnt</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-visual"></div>
+      <span class="card-number">05</span>
+      <span class="card-category cat-research">Riset</span>
+      <h3 class="card-title">Mixture of Experts: Arsitektur yang Diam-diam Mengubah Cara LLM Dilatih</h3>
+      <p class="card-excerpt">MoE bukan lagi trik optimasi. Ini adalah pergeseran paradigma yang menjelaskan bagaimana model terbesar dunia bekerja secara efisien.</p>
+      <div class="card-meta">
+        <span>13 Mei · 10 mnt</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-visual"></div>
+      <span class="card-number">06</span>
+      <span class="card-category cat-robotics">Robotika</span>
+      <h3 class="card-title">Embodied AI: Ketika Model Bahasa Belajar Memahami Dunia Fisik</h3>
+      <p class="card-excerpt">Integrasi LLM dengan sensor dunia nyata membuka babak baru dalam robotika kognitif. Tapi tantangannya jauh lebih dalam dari yang diperkirakan.</p>
+      <div class="card-meta">
+        <span>11 Mei · 13 mnt</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section fade-in" style="padding-top:0">
+  <div class="stats-row">
+    <div class="stat">
+      <div class="stat-number">240+</div>
+      <div class="stat-label">Artikel mendalam</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">48K</div>
+      <div class="stat-label">Pembaca aktif</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">96%</div>
+      <div class="stat-label">Akurasi riset</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">3×</div>
+      <div class="stat-label">Terbit per minggu</div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<div class="newsletter fade-in">
+  <div>
+    <div class="hero-tag" style="margin-bottom:20px">Newsletter</div>
+    <h2 class="newsletter-title">Jangan lewatkan<br><em>satu pun</em> terobosan.</h2>
+    <p class="newsletter-sub">Setiap Senin & Kamis — rangkuman terbaik riset AI, analisis industri, dan tools baru langsung ke inbox Anda. Tanpa spam, tanpa hype berlebihan.</p>
+  </div>
+  <div class="newsletter-form">
+    <input type="email" class="newsletter-input" placeholder="nama@perusahaan.com">
+    <input type="text" class="newsletter-input" placeholder="Nama Anda (opsional)">
+    <button class="newsletter-btn">Daftar Gratis →</button>
+    <p class="form-note">Lebih dari 48.000 profesional sudah berlangganan · Berhenti kapan saja</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="font-size:1.1rem">
+        <span class="logo-dot"></span>
+        NeuralEdge
+      </a>
+      <p>Publikasi AI independen untuk komunitas teknologi Indonesia. Analisis berbasis fakta, tanpa kepentingan korporat.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Topik</h4>
+      <ul>
+        <li><a href="#">Large Language Models</a></li>
+        <li><a href="#">Computer Vision</a></li>
+        <li><a href="#">Robotika</a></li>
+        <li><a href="#">Etika & Kebijakan</a></li>
+        <li><a href="#">AI Tools</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Perusahaan</h4>
+      <ul>
+        <li><a href="#">Tentang Kami</a></li>
+        <li><a href="#">Tim Editorial</a></li>
+        <li><a href="#">Karir</a></li>
+        <li><a href="#">Iklan</a></li>
+        <li><a href="#">Kontak</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Sumber</h4>
+      <ul>
+        <li><a href="#">Arsip Lengkap</a></li>
+        <li><a href="#">Paper Rekomendasi</a></li>
+        <li><a href="#">Glosarium AI</a></li>
+        <li><a href="#">RSS Feed</a></li>
+        <li><a href="#">API Publik</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 NeuralEdge. Hak cipta dilindungi.</span>
+    <div class="social-links">
+      <a href="#">Twitter</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">GitHub</a>
+      <a href="#">Discord</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        entry.target.style.transitionDelay = `${i * 0.05}s`;
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Card hover depth effect
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `perspective(800px) rotateY(${x * 2}deg) rotateX(${-y * 2}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+</script>
+</body>
+</html>
